@@ -1,0 +1,15 @@
+#!/bin/bash
+
+read -p "Enter Name of Server to Target (e.g. zonetransfer.me) >"
+TARGETSERVER="$REPLY"
+
+
+dig "$TARGETSERVER" -t ns
+
+echo "========================================="
+read -p "Enter Name Server from Answer Section (e.g. nsztml.digi.ninja) >"
+TARGETDNS="$REPLY"
+
+dig axfr "$TARGETSERVER" @"$TARGETDNS" > ~/bin/Toolbox/zonexferdata.txt
+
+echo "Results written to ~/bin/Toolbox/zonexferdata.txt"

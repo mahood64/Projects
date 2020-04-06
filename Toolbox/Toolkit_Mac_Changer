@@ -1,0 +1,29 @@
+#!/bin/bash
+
+INTERFACE=""
+DESIREDMAC=""
+
+echo "Current Interface:"
+ifconfig | head -n 1
+echo "===================="
+
+read -p "Enter the Interface You Wish to Modify > "
+
+INTERFACE="$REPLY"
+
+echo "===================="
+echo "Current MAC Address:"
+ifconfig | grep ether
+echo "===================="
+
+read -p "Enter the MAC Address to Set the Interface to > "
+
+DESIREDMAC="$REPLY"
+
+ifconfig "$INTERFACE" down
+ifconfig "$INTERFACE" hw ether "$DESIREDMAC"
+ifconfig "$INTERFACE" up
+
+echo "New Interface Settings:"
+ifconfig "$INTERFACE" | head -n 1
+ifconfig | grep ether

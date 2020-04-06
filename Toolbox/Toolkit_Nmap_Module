@@ -1,0 +1,61 @@
+#!/bin/bash
+
+TARGETIP=""
+while [[ "$REPLY" != 4 ]]; do
+
+	#Display options to user
+	cat <<-_EOF_
+	Please Select:
+
+	1. Stealth Scan
+	2. Agressive Scan
+	3. ARP pool
+	4. Exit Module
+
+	_EOF_
+	#prompt user for input
+	read -p "Enter Your Selection [1-3] >"
+
+	if [[ "$REPLY" =~ ^[1-4]$ ]]; then
+
+		if [[ "$REPLY" == 1 ]]; then
+
+			read -p "Enter an IP or CIDR Range to scan >"
+			TARGETIP="$REPLY"
+			echo "Performing scan, please be patient."
+
+			nmap -sS "$TARGETIP" -v > ~/bin/Toolbox/NmapStealthResults.txt
+
+			echo "Results written to ~/bin/Toolbox/NmapStealthResults.txt"
+
+		fi
+
+		if [[ "$REPLY" == 2 ]]; then
+
+			read -p "Enter an IP or CIDR Range to scan >"
+			TARGETIP="$REPLY"
+			echo "Performing scan, please be patient."
+
+			nmap -A "$TARGETIP" -v > ~/bin/Toolbox/NmapAgressiveResults.txt
+
+			echo "Results written to ~/bin/Toolbox/NmapAgressiveResults.txt"
+
+		fi
+
+		if [[ "$REPLY" == 3 ]]; then
+			echo "========== ARP Hosts =========="
+			arp -a
+			echo "==============================="
+
+		fi
+
+	#If user selection isnt within valid range
+	else
+
+	#inform user, bump back to menu
+		echo "Please Enter a valid Selection"
+		sleep 4
+	fi
+
+#finish script
+done

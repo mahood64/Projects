@@ -1,0 +1,91 @@
+#!/bin/bash
+
+#Created By: Matt Hood
+#Last Edited: 2/13/2020
+
+#This script shows Free memory available on the server, free HDD space on the server and
+#the top 5 processes based on memory usage
+
+#Delay Variable set to desired value
+DELAY=5
+
+#Start of while loop, will always start
+while [[ "$REPLY" != 0 ]]; do
+	#clear previous screen
+	clear
+	#Display options to user
+	cat <<-_EOF_
+	Please Select:
+
+	1. MAC Changer
+	2. Nmap Scans
+	3. Zone Transfer Attack
+	4. Internet Connectivity Status
+	5. Exit Script
+
+	_EOF_
+	#prompt user for input
+	read -p "Enter Your Selection [1-5] >"
+
+	#Start of if loop for possible user inputs, check if input is in acceptible range
+	if [[ "$REPLY" =~ ^[1-5]$ ]]; then
+
+		#Start of if loop for valid user inputs
+		if [[ "$REPLY" == 1 ]]; then
+			echo "========== MAC Changer Module =========="
+			source ~/bin/Toolbox/Toolkit_Mac_Changer
+			sleep "$DELAY"
+
+		fi
+
+		if [[ "$REPLY" == 2 ]]; then
+			echo "========== Nmap Module =========="
+			source ~/bin/Toolbox/Toolkit_Nmap_Module
+
+		fi
+
+		if [[ "$REPLY" == 3 ]]; then
+			echo "========== Zone Tranfer Module =========="
+
+			source ~/bin/Toolbox/Toolkit_Zone_Transfer
+			sleep "$DELAY"
+		fi
+
+
+		if [[ "$REPLY" == 4 ]]; then
+			#wget checking google.com, quiet supressing output
+			wget --spider --quiet http://google.com
+			echo "Internet Connection Status"
+			#checking exit code of wget command
+			#if wget reaches goole
+			if [[ "$?" == 0 ]]; then
+				echo "Up"
+
+			#if wget doesn't reach google
+			else
+
+				echo "Down"
+
+
+			fi
+
+			sleep "$DELAY"
+
+		fi
+
+		if [[ "$REPLY" == 5 ]]; then
+			#exit script
+			clear
+			exit
+		fi
+
+	#If user selection isnt within valid range
+	else
+
+		#inform user, bump back to menu
+		echo "Please Enter a valid Selection"
+		sleep 3
+	fi
+
+#finish script
+done
